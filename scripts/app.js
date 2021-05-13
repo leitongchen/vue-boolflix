@@ -7,39 +7,16 @@ const app = new Vue({
         userSearch: "",
 
         moviesList: [],
-
-        languageList: {
-            "en": ['gb', 'us', 'au', 'ca'],
-            "fa": ['ir', 'af'],
-            "ko": ['kr', 'kp'],
-            "es": ['ar', 'bo', 'mx', 'co'],
-            "cn": ['tw']
-        }
+        seriesTv: [],
 
     },
     methods: {
         onSearchClick() {
 
-            const axiosParam = {
-                params: {
-                    api_key: this.tmdbAPIKey,
-                    query: this.userSearch,
-                    language: "it-IT"
-                }
-            };
+            this.getMoviesTv("movie");
+            this.getMoviesTv("tv");
+        
 
-            axios.get("https://api.themoviedb.org/3/search/movie", axiosParam).then((resp) => {
-                /*
-                Key da stampare: 
-                - title
-                - original_title
-                - original_language
-                - vote_average
-                */
-
-                this.moviesList = [...resp.data.results]
-                console.log(this.moviesList) 
-            })
 
         },
         getFlagIcon(movie) {
@@ -51,8 +28,10 @@ const app = new Vue({
                 "ko": ['kr', 'kp'],
                 "zh": ['cn', 'tw'],
                 "el": ['gr'],
-                "ja": ['jp']
-
+                "ja": ['jp'],
+                "hi": ['in'],
+                "ta": ['np'],
+                "da": ['dk'],
             }
 
             let movieLang = movie.original_language;
@@ -64,6 +43,58 @@ const app = new Vue({
             } else {
                 return movieLang;
             }
+        },
+
+        getMoviesTv(searchType) {
+
+
+
+            const axiosParam = {
+                params: {
+                    api_key: this.tmdbAPIKey,
+                    query: this.userSearch,
+                    language: "it-IT"
+                }
+            };
+
+            axios.get("https://api.themoviedb.org/3/search/" + searchType, axiosParam).then((resp) => {
+                /*
+                Key da stampare: 
+                - title
+                - original_title
+                - original_language
+                - vote_average
+                */
+
+                if (searchType === "movie") {
+
+                    this.moviesList = [...resp.data.results]
+                } else if (searchType === "tv") {
+                    
+                    const seriesList = [...resp.data.results]
+                    
+                    this.seriesTv = seriesList.map((tvSeries) => {
+                        
+                        tvSeries.title = tvSeries.name;
+                        tvSeries.original_title = tvSeries.original_name;
+
+                        return tvSeries;
+                    })
+
+                    console.log(this.seriesTv)
+                    
+                }
+            })
+
+            /*
+            SERIE TV TMDB:
+            - name
+            - original_name
+            - original_language
+            - vote_average
+            */
+
+            // convertire le chiavi delle serie = chiavi film
 
         }
 

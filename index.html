@@ -26,9 +26,22 @@
 
         </form>
 
+        <h3>FILM</h3>
         <ul>
             <li v-for="(movie, index) in moviesList">
-                {{index + 1}}
+                {{index + 1}} 
+                <p>Titolo: <strong>{{movie.title}}</strong> </p>
+                <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
+                <p>Lingua originale: <span class="flag-icon" :class="'flag-icon-' + getFlagIcon(movie)"></span> 
+                <p>Voto: <strong>{{movie.vote_average}}</strong></p>
+
+            </li>
+        </ul>
+
+        <h3>SERIE TV</h3>
+        <ul>
+            <li v-for="(movie, index) in seriesTv">
+                {{index + 1}} 
                 <p>Titolo: <strong>{{movie.title}}</strong> </p>
                 <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
                 <p>Lingua originale: <span class="flag-icon" :class="'flag-icon-' + getFlagIcon(movie)"></span> 
