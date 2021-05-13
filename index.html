@@ -14,7 +14,26 @@
 <body>
     <main id="app">
 
-        
+        <h1>Boolflix</h1>
+
+        <form action="">
+
+            <input type="text" v-model="userSearch">
+
+            <button @click.prevent="onSearchClick()">Search</button>
+
+        </form>
+
+        <ul>
+            <li v-for="movie in moviesList">
+                <p>Titolo: {{movie.title}} </p>
+                <p>Titolo originale: {{movie.original_title}} </p>
+                <p>Lingua originale: {{movie.original_language}} </p>
+                <p>Voto: {{movie.vote_average}}</p>
+
+
+            </li>
+        </ul>
 
     </main>
 
