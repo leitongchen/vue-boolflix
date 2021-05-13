@@ -7,6 +7,8 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+
     <link rel="stylesheet" href="styles/style.css">
 
     <title>Boolflix</title>
@@ -25,12 +27,12 @@
         </form>
 
         <ul>
-            <li v-for="movie in moviesList">
-                <p>Titolo: {{movie.title}} </p>
-                <p>Titolo originale: {{movie.original_title}} </p>
-                <p>Lingua originale: {{movie.original_language}} </p>
-                <p>Voto: {{movie.vote_average}}</p>
-
+            <li v-for="(movie, index) in moviesList">
+                {{index + 1}}
+                <p>Titolo: <strong>{{movie.title}}</strong> </p>
+                <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
+                <p>Lingua originale: <span class="flag-icon" :class="'flag-icon-' + getFlagIcon(movie)"></span> 
+                <p>Voto: <strong>{{movie.vote_average}}</strong></p>
 
             </li>
         </ul>
