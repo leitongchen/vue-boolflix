@@ -26,29 +26,34 @@
 
         </form>
 
-        <h3>FILM</h3>
-        <ul>
-            <li v-for="(movie, index) in moviesList">
-                {{index + 1}} 
-                <p>Titolo: <strong>{{movie.title}}</strong> </p>
-                <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
-                <p>Lingua originale: <span class="flag-icon" :class="'flag-icon-' + getFlagIcon(movie)"></span> 
-                <p>Voto: <strong>{{movie.vote_average}}</strong></p>
-
-            </li>
-        </ul>
-
-        <h3>SERIE TV</h3>
-        <ul>
-            <li v-for="(movie, index) in seriesTv">
-                {{index + 1}} 
-                <p>Titolo: <strong>{{movie.title}}</strong> </p>
-                <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
-                <p>Lingua originale: <span class="flag-icon" :class="'flag-icon-' + getFlagIcon(movie)"></span> 
-                <p>Voto: <strong>{{movie.vote_average}}</strong></p>
-
-            </li>
-        </ul>
+        <div v-if="moviesList.length > 0 || seriesTv.length > 0">
+            <h3>FILM</h3>
+            <ul>
+                <li v-for="(movie, index) in moviesList"> 
+                    <img :src="addPoster(movie)" alt="poster movie">
+                    <p>Titolo: <strong>{{movie.title}}</strong> </p>
+                    <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
+                    <p>Lingua originale: <span class="flag-icon flag-icon-squared" :class="'flag-icon-' + getFlagIcon(movie)"></span> 
+                    <p>Voto: <strong>{{movie.vote_average}}</strong></p>
+    
+                </li>
+            </ul>
+    
+            <h3>SERIE TV</h3>
+            <ul>
+                <li v-for="(movie, index) in seriesTv">
+                    <img :src="addPoster(movie)" alt="poster movie">
+                    <p>Titolo: <strong>{{movie.title}}</strong> </p>
+                    <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
+                    <p>Lingua originale: <span class="flag-icon flag-icon-squared" :class="'flag-icon-' + getFlagIcon(movie)"></span> 
+                    <p>Voto: <strong>{{movie.vote_average}}</strong></p>
+    
+                </li>
+            </ul>
+        </div>
+        <div v-else>  
+            {{ searchMessageToPrint() }}
+        </div>
 
     </main>
 

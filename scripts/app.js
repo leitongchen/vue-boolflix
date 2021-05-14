@@ -9,18 +9,24 @@ const app = new Vue({
         moviesList: [],
         seriesTv: [],
 
+        searchingEnd: false,
+
     },
     methods: {
         onSearchClick() {
 
+            if (!this.userSearch) {
+                return;
+            }
+
             this.getMoviesTv("movie");
             this.getMoviesTv("tv");
-        
 
-
+            if (this.moviesList.length == 0 && this.seriesTv.length == 0) {
+                this.searchingEnd = true;
+            }
         },
         getFlagIcon(movie) {
-
             const languageList = {
                 "en": ['gb', 'us', 'au', 'ca'],
                 "uk": ['gb'],
@@ -32,23 +38,17 @@ const app = new Vue({
                 "hi": ['in'],
                 "ta": ['np'],
                 "da": ['dk'],
-            }
-
+            };
             let movieLang = movie.original_language;
 
             if (Object.keys(languageList).includes(movieLang)) {
-                console.log(languageList[movieLang][0])
 
-                return languageList[movieLang][0]
+                return languageList[movieLang][0];
             } else {
                 return movieLang;
             }
         },
-
         getMoviesTv(searchType) {
-
-
-
             const axiosParam = {
                 params: {
                     api_key: this.tmdbAPIKey,
@@ -68,50 +68,44 @@ const app = new Vue({
 
                 if (searchType === "movie") {
 
-                    this.moviesList = [...resp.data.results]
+                    this.moviesList = [...resp.data.results];
                 } else if (searchType === "tv") {
-                    
-                    const seriesList = [...resp.data.results]
-                    
+
+                    /*
+                    SERIE TV TMDB:
+                    - name
+                    - original_name
+                    - original_language
+                    - vote_average
+                    */
+                    const seriesList = [...resp.data.results];
+
                     this.seriesTv = seriesList.map((tvSeries) => {
-                        
+
                         tvSeries.title = tvSeries.name;
                         tvSeries.original_title = tvSeries.original_name;
 
                         return tvSeries;
-                    })
-
-                    console.log(this.seriesTv)
-                    
+                    });
                 }
-            })
+            });
+        },
+        searchMessageToPrint() {
+            if (this.userSearch) {
+                return "In caricamento";
+            } else if (this.searchingEnd) {
+                return "Nessun risultato";
+            }
+        },
+        addPoster(movieObject) {
+            const posterSize = "w154"
 
-            /*
-            SERIE TV TMDB:
-            - name
-            - original_name
-            - original_language
-            - vote_average
-            */
+            if (!movieObject.poster_path) {
+                return "http://www.movienewz.com/img/films/poster-holder.jpg"
+            }
+            return "https://image.tmdb.org/t/p/" + posterSize + movieObject.poster_path;
+        },
 
-            // convertire le chiavi delle serie = chiavi film
-
-        }
 
     },
-    mounted() {
-        // axios.get("https://api.themoviedb.org/3/search/movie", {
-
-        //     params: {
-        //         api_key: this.tmdbAPIKey,
-        //         query: this.userSearch,
-        //         language: "it-IT"
-        //     }
-
-        // }).then((resp) => {
-        //     console.log("ciao");
-        //     console.log(resp);
-        // });
-
-    }
 })
