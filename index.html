@@ -8,6 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <link rel="stylesheet" href="styles/style.css">
 
@@ -26,7 +27,7 @@
 
         </form>
 
-        <div v-if="moviesList.length > 0 || seriesTv.length > 0">
+        <div v-if="moviesList.length > 0 || seriesTvList.length > 0">
             <h3>FILM</h3>
             <ul>
                 <li v-for="(movie, index) in moviesList"> 
@@ -34,19 +35,28 @@
                     <p>Titolo: <strong>{{movie.title}}</strong> </p>
                     <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
                     <p>Lingua originale: <span class="flag-icon flag-icon-squared" :class="'flag-icon-' + getFlagIcon(movie)"></span> 
-                    <p>Voto: <strong>{{movie.vote_average}}</strong></p>
-    
+                    <p>Voto: {{movie.vote_average}}</p>
+                    <p>
+                        Voto:  
+                        <i class="fas fa-star" 
+                        v-for="(star, starIndex) in 5"
+                        :class="addStars(movie, star, starIndex)"></i>
+                        <!--
+                            utilizzare l'indice per stabilire quante stelle colorare
+                        -->
+                        <!-- <i class="fa-star" :class="addStars()" v-for="star in (5 - movie.vote_average)"></i> -->
+                    </p>      
                 </li>
             </ul>
     
             <h3>SERIE TV</h3>
             <ul>
-                <li v-for="(movie, index) in seriesTv">
+                <li v-for="(movie, index) in seriesTvList">
                     <img :src="addPoster(movie)" alt="poster movie">
                     <p>Titolo: <strong>{{movie.title}}</strong> </p>
                     <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
                     <p>Lingua originale: <span class="flag-icon flag-icon-squared" :class="'flag-icon-' + getFlagIcon(movie)"></span> 
-                    <p>Voto: <strong>{{movie.vote_average}}</strong></p>
+                    <p>Voto: {{movie.vote_average}}</p>
     
                 </li>
             </ul>

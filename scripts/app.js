@@ -7,7 +7,7 @@ const app = new Vue({
         userSearch: "",
 
         moviesList: [],
-        seriesTv: [],
+        seriesTvList: [],
 
         searchingEnd: false,
 
@@ -22,7 +22,9 @@ const app = new Vue({
             this.getMoviesTv("movie");
             this.getMoviesTv("tv");
 
-            if (this.moviesList.length == 0 && this.seriesTv.length == 0) {
+
+
+            if (this.moviesList.length == 0 && this.seriesTvList.length == 0) {
                 this.searchingEnd = true;
             }
         },
@@ -69,6 +71,8 @@ const app = new Vue({
                 if (searchType === "movie") {
 
                     this.moviesList = [...resp.data.results];
+                    this.convertVote(this.moviesList)
+
                 } else if (searchType === "tv") {
 
                     /*
@@ -79,14 +83,15 @@ const app = new Vue({
                     - vote_average
                     */
                     const seriesList = [...resp.data.results];
-
-                    this.seriesTv = seriesList.map((tvSeries) => {
+                    
+                    this.seriesTvList = seriesList.map((tvSeries) => {
 
                         tvSeries.title = tvSeries.name;
                         tvSeries.original_title = tvSeries.original_name;
 
                         return tvSeries;
                     });
+                    this.convertVote(this.seriesTvList)
                 }
             });
         },
@@ -98,14 +103,30 @@ const app = new Vue({
             }
         },
         addPoster(movieObject) {
-            const posterSize = "w154"
+            const posterSize = "w154";
 
             if (!movieObject.poster_path) {
-                return "http://www.movienewz.com/img/films/poster-holder.jpg"
+                return "http://www.movienewz.com/img/films/poster-holder.jpg";
             }
             return "https://image.tmdb.org/t/p/" + posterSize + movieObject.poster_path;
         },
+        convertVote(listArray) {
 
+            listArray.map((movie) => {
+                movie.vote_average = Math.ceil(movie.vote_average / 2);
+            });
+        },
+        addStars(movie, star, starIndex) {
+            
+            const voteNum = movie.vote_average;
+
+            if (starIndex + 1 <= voteNum) {
+                
+
+                return "text-yellow"
+            }
+
+        },
 
     },
 })

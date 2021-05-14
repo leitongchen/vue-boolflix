@@ -6,4 +6,13 @@
 
 body {
     background-color: rgb(97, 103, 121);
+
+}
+
+.fa-star.text-yellow {
+    color: rgb(255, 207, 102);
+}
+
+.fa-star {
+    color: rgb(189, 189, 189);
 }
