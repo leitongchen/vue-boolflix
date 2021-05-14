@@ -1,18 +1,158 @@
-/* * {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-} */
-
-body {
-    background-color: rgb(97, 103, 121);
-
 }
 
+body {
+    background-color: #141414;
+    color: white;
+
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+    width: 95%;
+    margin: auto;
+    padding: 20px 0;
+}
+
+header {
+    display: flex;
+    align-items: center;
+}
+
+.logo-container {
+    width: 15%;
+    max-width: 120px;
+    min-width: 80px;
+    flex-shrink: 0;
+}
+
+.logo-container img, 
+.profile-img-container img {
+    width: 100%;
+}
+
+/* INPUT SEARCH BAR */
+.input-container {
+    flex-grow: 1;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.input-style {
+    width: 40%;
+
+    padding: 8px 16px;
+    border: 1px solid  rgba(255, 255, 255, .5);
+    border-radius: 16px;
+
+    color: rgba(255, 255, 255, 1);
+
+    display: flex;
+}
+
+.input-container input {
+    flex-grow: 1;
+    border: 0;
+    border-radius: 16px;
+
+    background-color: transparent;
+    color: rgba(255, 255, 255, 1);
+
+    outline: none;
+}
+
+.input-container input::placeholder {
+    color: rgba(255, 255, 255, .7);
+}
+
+.input-container i {
+    cursor: pointer;
+}
+
+/* HEADER PARTE DESTRA */
+.personal-profile {
+    display: flex;
+    align-items: center;
+}
+
+.profile-img-container {
+    width: 35px;
+    height: 35px;
+    border-radius: 10px;
+    overflow: hidden;
+
+    display: inline-block;
+    vertical-align: middle;
+
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+.personal-profile i {
+    font-size: 1.3rem;
+    color: white;
+}
+
+.personal-profile a {
+    display: inline-block;
+    position: relative;
+
+    margin: 0 10px;
+}
+
+.personal-profile .alert {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: rgb(168, 24, 24);
+    text-align: center;
+    line-height: 20px;
+
+    font-size: .8rem;
+    font-weight: 700;
+
+    position: absolute;
+    right: -10px;
+    top: -10px;
+}
+
+
+
+/* CLASSI COMUNI */
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+
+/* CLASSI JS */
 .fa-star.text-yellow {
     color: rgb(255, 207, 102);
 }
-
 .fa-star {
     color: rgb(189, 189, 189);
+}
+
+
+@media all and (max-width: 1200px) {
+    .input-style {
+        width: 60%;
+    }
+
+}
+
+@media all and (max-width: 992px) {
+    .input-style {
+        width: 80%;
+    }
+
+    
 }

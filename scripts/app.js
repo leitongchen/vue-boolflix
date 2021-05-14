@@ -24,9 +24,7 @@ const app = new Vue({
             this.getMoviesTv("movie");
             this.getMoviesTv("tv");
 
-            // if (this.moviesList.length == 0 && this.seriesTvList.length == 0) {
-            //     this.searching = true;
-            // }
+            this.userSearch = ""
         },
         getFlagIcon(movie) {
             const languageList = {
@@ -106,17 +104,16 @@ const app = new Vue({
             this.moviesTVList = array1.concat(array2); 
             
         },
-
         searchMessageToPrint() {
             if (this.searchingForQuery != 0) {
-                return "In caricamento";
+                return "Sto cercando per te...";
             } else if (this.moviesTVList.length == 0) {
                 return "Nessun risultato";
             }
         },
         // Aggiunge poster, combina il link
         addPoster(movieObject) {
-            const posterSize = "w154";
+            const posterSize = "w185";
 
             if (!movieObject.poster_path) {
                 return "http://www.movienewz.com/img/films/poster-holder.jpg";

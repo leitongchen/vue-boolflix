@@ -17,18 +17,49 @@
 <body>
     <main id="app">
 
-        <h1>Boolflix</h1>
+        <header>
 
-        <form action="">
+            <div class="logo-container">
+                <a href="#">
+                    <img src="img/boolflix-logo.png" alt="logo Boolflix">
+                </a>
+            </div>
+          
+            <div class="input-container">
+                <div class="input-style">
+                    <input type="text"
+                    placeholder="Search for Movies & TV Shows..." 
+                    v-model="userSearch"
+                    @keyup.enter="onSearchClick()">
+                    
+                    <i class="fas fa-search"
+                    @click="onSearchClick()"></i>
+                </div>
+            </div>
 
-            <input type="text" v-model="userSearch">
+            <div class="personal-profile">
+                <a href="#">
+                    KIDS
+                </a>
+                <a href="#">
+                    <i class="fas fa-bell"></i>
+                    <span class="alert">2</span>
+                </a>
+                <a href="#">
+                    <div class="profile-img-container">
+                        <img src="img/profile.pic.jpg" alt="profile picture">
+                    </div>
+                    <i class="fas fa-sort-down"></i>
+                </a>
+                
+                
+            </div>
+           
+        </header>
 
-            <button @click.prevent="onSearchClick()">Search</button>
-
-        </form>
+        
 
         <div v-if="moviesTVList.length != 0">
-            <!-- <h3>FILM</h3> -->
             <ul>
                 <li v-for="(movie, index) in moviesTVList"> 
                     <img :src="addPoster(movie)" alt="poster movie">
@@ -43,24 +74,7 @@
                     </p>      
                 </li>
             </ul>
-    
-            <!-- <h3>SERIE TV</h3>
-            <ul>
-                <li v-for="(movie, index) in seriesTvList">
-                    <img :src="addPoster(movie)" alt="poster movie">
-                    <p>Titolo: <strong>{{movie.title}}</strong> </p>
-                    <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
-                    <p>Lingua originale: <span class="flag-icon flag-icon-squared" :class="'flag-icon-' + getFlagIcon(movie)"></span> 
-                    <p>Voto: {{movie.vote_average}}</p>
-                    <p>
-                        Voto:  
-                        <i class="fas fa-star" 
-                        v-for="(star, starIndex) in 5"
-                        :class="addStars(movie, starIndex)"></i>
-                    </p>      
-    
-                </li>
-            </ul> -->
+
         </div>
         <div v-else-if="searchingForQuery == 0">  
             {{ searchMessageToPrint() }}
@@ -71,3 +85,22 @@
     <script src="scripts/app.js"></script>
 </body>
 </html>
+
+    
+<!-- <h3>SERIE TV</h3>
+<ul>
+    <li v-for="(movie, index) in seriesTvList">
+        <img :src="addPoster(movie)" alt="poster movie">
+        <p>Titolo: <strong>{{movie.title}}</strong> </p>
+        <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
+        <p>Lingua originale: <span class="flag-icon flag-icon-squared" :class="'flag-icon-' + getFlagIcon(movie)"></span> 
+        <p>Voto: {{movie.vote_average}}</p>
+        <p>
+            Voto:  
+            <i class="fas fa-star" 
+            v-for="(star, starIndex) in 5"
+            :class="addStars(movie, starIndex)"></i>
+        </p>      
+
+    </li>
+</ul> -->
