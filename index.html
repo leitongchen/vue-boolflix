@@ -27,10 +27,26 @@
 
         </form>
 
-        <div v-if="moviesList.length > 0 || seriesTvList.length > 0">
-            <h3>FILM</h3>
+        <div v-if="moviesTVList.length != 0">
+            <!-- <h3>FILM</h3> -->
             <ul>
-                <li v-for="(movie, index) in moviesList"> 
+                <li v-for="(movie, index) in moviesTVList"> 
+                    <img :src="addPoster(movie)" alt="poster movie">
+                    <p>Titolo: <strong>{{movie.title}}</strong> </p>
+                    <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
+                    <p>Lingua originale: <span class="flag-icon flag-icon-squared" :class="'flag-icon-' + getFlagIcon(movie)"></span> 
+                    <p>
+                        Voto:  
+                        <i class="fas fa-star" 
+                        v-for="(star, starIndex) in 5"
+                        :class="addStars(movie, starIndex)"></i>
+                    </p>      
+                </li>
+            </ul>
+    
+            <!-- <h3>SERIE TV</h3>
+            <ul>
+                <li v-for="(movie, index) in seriesTvList">
                     <img :src="addPoster(movie)" alt="poster movie">
                     <p>Titolo: <strong>{{movie.title}}</strong> </p>
                     <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
@@ -40,28 +56,13 @@
                         Voto:  
                         <i class="fas fa-star" 
                         v-for="(star, starIndex) in 5"
-                        :class="addStars(movie, star, starIndex)"></i>
-                        <!--
-                            utilizzare l'indice per stabilire quante stelle colorare
-                        -->
-                        <!-- <i class="fa-star" :class="addStars()" v-for="star in (5 - movie.vote_average)"></i> -->
+                        :class="addStars(movie, starIndex)"></i>
                     </p>      
-                </li>
-            </ul>
-    
-            <h3>SERIE TV</h3>
-            <ul>
-                <li v-for="(movie, index) in seriesTvList">
-                    <img :src="addPoster(movie)" alt="poster movie">
-                    <p>Titolo: <strong>{{movie.title}}</strong> </p>
-                    <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
-                    <p>Lingua originale: <span class="flag-icon flag-icon-squared" :class="'flag-icon-' + getFlagIcon(movie)"></span> 
-                    <p>Voto: {{movie.vote_average}}</p>
     
                 </li>
-            </ul>
+            </ul> -->
         </div>
-        <div v-else>  
+        <div v-else-if="searchingForQuery == 0">  
             {{ searchMessageToPrint() }}
         </div>
 

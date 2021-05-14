@@ -9,8 +9,9 @@ const app = new Vue({
         moviesList: [],
         seriesTvList: [],
 
-        searchingEnd: false,
+        moviesTVList: [],
 
+        searchingForQuery: null,
     },
     methods: {
         onSearchClick() {
@@ -18,15 +19,14 @@ const app = new Vue({
             if (!this.userSearch) {
                 return;
             }
+            this.searchingForQuery = 0;
 
             this.getMoviesTv("movie");
             this.getMoviesTv("tv");
 
-
-
-            if (this.moviesList.length == 0 && this.seriesTvList.length == 0) {
-                this.searchingEnd = true;
-            }
+            // if (this.moviesList.length == 0 && this.seriesTvList.length == 0) {
+            //     this.searching = true;
+            // }
         },
         getFlagIcon(movie) {
             const languageList = {
@@ -51,6 +51,9 @@ const app = new Vue({
             }
         },
         getMoviesTv(searchType) {
+
+            this.searchingForQuery++
+
             const axiosParam = {
                 params: {
                     api_key: this.tmdbAPIKey,
@@ -58,7 +61,6 @@ const app = new Vue({
                     language: "it-IT"
                 }
             };
-
             axios.get("https://api.themoviedb.org/3/search/" + searchType, axiosParam).then((resp) => {
                 /*
                 Key da stampare: 
@@ -67,14 +69,13 @@ const app = new Vue({
                 - original_language
                 - vote_average
                 */
-
                 if (searchType === "movie") {
-
+                    this.searchingForQuery--
                     this.moviesList = [...resp.data.results];
                     this.convertVote(this.moviesList)
 
-                } else if (searchType === "tv") {
 
+                } else if (searchType === "tv") {
                     /*
                     SERIE TV TMDB:
                     - name
@@ -82,6 +83,7 @@ const app = new Vue({
                     - original_language
                     - vote_average
                     */
+                    this.searchingForQuery--
                     const seriesList = [...resp.data.results];
                     
                     this.seriesTvList = seriesList.map((tvSeries) => {
@@ -93,15 +95,26 @@ const app = new Vue({
                     });
                     this.convertVote(this.seriesTvList)
                 }
+                if (this.searchingForQuery == 0) {
+                    this.concatOneBigList(this.moviesList, this.seriesTvList)
+                }
             });
         },
+        concatOneBigList(array1, array2) {
+            this.moviesTVList = [];
+
+            this.moviesTVList = array1.concat(array2); 
+            
+        },
+
         searchMessageToPrint() {
-            if (this.userSearch) {
+            if (this.searchingForQuery != 0) {
                 return "In caricamento";
-            } else if (this.searchingEnd) {
+            } else if (this.moviesTVList.length == 0) {
                 return "Nessun risultato";
             }
         },
+        // Aggiunge poster, combina il link
         addPoster(movieObject) {
             const posterSize = "w154";
 
@@ -110,19 +123,20 @@ const app = new Vue({
             }
             return "https://image.tmdb.org/t/p/" + posterSize + movieObject.poster_path;
         },
+        // Converte il voto da 1/10 a 1/5
         convertVote(listArray) {
 
             listArray.map((movie) => {
                 movie.vote_average = Math.ceil(movie.vote_average / 2);
             });
         },
-        addStars(movie, star, starIndex) {
+        // aggiunge una classe text-yellow alle stelle in base al voto
+        addStars(movie, starIndex) {
             
             const voteNum = movie.vote_average;
 
             if (starIndex + 1 <= voteNum) {
                 
-
                 return "text-yellow"
             }
 
