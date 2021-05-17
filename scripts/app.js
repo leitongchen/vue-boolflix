@@ -2,8 +2,6 @@ const app = new Vue({
 
     el: "#app",
     data: {
-
-        // tmdbAPIKey: "ad3dc44159bbda29e23cab3d107aa841",
         axiosParam: {
             params: {
                 api_key: "ad3dc44159bbda29e23cab3d107aa841",
@@ -20,8 +18,6 @@ const app = new Vue({
         moviesTVList: [],
 
         genresList: [],
-        // movieGenresList: [],
-        // tvGenresList: [],
 
         searchingForQuery: null,
 
@@ -42,6 +38,8 @@ const app = new Vue({
 
             this.userSearch = ""
         },
+
+        // ritorna la sigla per stabilire la bandiera da associare alla lingua del film
         getFlagIcon(movie) {
             const languageList = {
                 "en": ['gb', 'us', 'au', 'ca'],
@@ -65,6 +63,8 @@ const app = new Vue({
                 return movieLang;
             }
         },
+
+        // chiamata ajax per cercare movies o tv series nel database
         getMoviesTv(searchType) {
 
             this.searchingForQuery++
@@ -88,12 +88,11 @@ const app = new Vue({
                 if (searchType === "movie") {
                     this.searchingForQuery--
                     this.moviesList = [...resp.data.results];
-
+                    
                     this.moviesList.forEach((movie) => {
-
                         Vue.set(movie, "isMovie", true);
                     })
-
+                    //converte il voto in 1/5
                     this.convertVote(this.moviesList)
 
 
@@ -108,6 +107,7 @@ const app = new Vue({
                     this.searchingForQuery--
                     const seriesList = [...resp.data.results];
                     
+                    // trasforma alcune chiavi delle serietv per farle uguali a quelle di movies
                     this.seriesTvList = seriesList.map((tvSeries) => {
 
                         tvSeries.title = tvSeries.name;
@@ -117,17 +117,20 @@ const app = new Vue({
                     });
 
                     this.seriesTvList.forEach((serieTv) => {
-
                         Vue.set(serieTv, "isTVShow", true);
                     })
-
+                    //converte il voto in 1/5
                     this.convertVote(this.seriesTvList)
                 }
+                // invoca la funzione che concatena i due array
                 if (this.searchingForQuery == 0) {
                     this.concatOneBigList(this.moviesList, this.seriesTvList)
                 }
             });
         },
+
+        // riunisce in un unica variabile le due array di movie e tv series
+        // viene invocata la funzione che aggiunge l'array del CAST
         concatOneBigList(array1, array2) {
             this.moviesTVList = [];
 
@@ -140,6 +143,9 @@ const app = new Vue({
             this.searchMessageToPrint();
             this.searchingForQuery = null;
         },
+
+        // Funzione richiamata più volte nel corso dell'elaborazione dei dati API
+        // Restituisce un messaggio per l'utente
         searchMessageToPrint() {
             if (this.searchingForQuery > 0) {
                 this.errorMsg = "Sto cercando per te...";
@@ -167,19 +173,22 @@ const app = new Vue({
         addStars(movie, starIndex) {
             
             const voteNum = movie.vote_average;
-
             if (starIndex + 1 <= voteNum) {
-                
                 return "text-yellow"
             }
-
         },
+
+        //controlla se il titolo del film o serie è uguale al titolo originale
+        // se sì, ritorna false, e il titolo originale non viene stampato
         checkIfSame(movieObject) {
             if (movieObject.title === movieObject.original_title) {
                 return false 
             }
             return true; 
         },
+
+        // Fa una chiamata ajax per reperire il nome degli attori per ciascun film
+        // I nomi ricavati vengono inseriti direttamente in moviesTVList
         getActors(moviesTVList) {  
             moviesTVList.forEach((movie) => {
                 const searchKey = movie.isMovie ? "movie" : "tv";
@@ -191,9 +200,12 @@ const app = new Vue({
                     })
             })
         },
+
+        // fa una comparazione tra i codici dei generi del film preso in esame con 
+        // l'elenco di tutti i generi in "this.genresList"
+        // ritorna i nomi dei generi riferiti al film preso in esame
         getGenres(movie) {
             const movieGenres = movie.genre_ids
-            
             let genresToPrint = [];
 
             this.genresList.forEach((genre) => {
@@ -208,23 +220,18 @@ const app = new Vue({
             return genresToPrint.join(", ");
         },
 
+        // chiamata ajax per salvare nella variabile in data "this.genresList"
+        // tutti i generi (codice e nome) disponibili
+        // sia di tipo "movie" che "tv"
+        // la funzione viene chiamata in mounted
         ajaxGenreLists(listType) {
 
             axios.get(`https://api.themoviedb.org/3/genre/${listType}/list`, this.axiosParam)
             .then((resp) => {
 
                 this.genresList.push(...resp.data.genres)
-                /*
-                if (listType === "movie") {
-                    this.movieGenresList = [...resp.data.genres]
-
-                } else if (listType === "tv") {
-                    this.tvGenresList = [...resp.data.genres]
-                }
-                */
             })
         },
-
     },
     mounted() {
         this.ajaxGenreLists("movie");
