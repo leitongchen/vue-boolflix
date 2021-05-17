@@ -3,7 +3,13 @@ const app = new Vue({
     el: "#app",
     data: {
 
-        tmdbAPIKey: "ad3dc44159bbda29e23cab3d107aa841",
+        // tmdbAPIKey: "ad3dc44159bbda29e23cab3d107aa841",
+        axiosParam: {
+            params: {
+                api_key: "ad3dc44159bbda29e23cab3d107aa841",
+                language: "it-IT"
+            }
+        },
         userSearch: "",
 
         currentSearch: "",
@@ -12,6 +18,10 @@ const app = new Vue({
         seriesTvList: [],
 
         moviesTVList: [],
+
+        genresList: [],
+        // movieGenresList: [],
+        // tvGenresList: [],
 
         searchingForQuery: null,
 
@@ -62,11 +72,11 @@ const app = new Vue({
 
             const axiosParam = {
                 params: {
-                    api_key: this.tmdbAPIKey,
+                    ...this.axiosParam.params,
                     query: this.userSearch,
-                    language: "it-IT"
                 }
             };
+      
             axios.get("https://api.themoviedb.org/3/search/" + searchType, axiosParam).then((resp) => {
                 /*
                 Key da stampare: 
@@ -170,25 +180,54 @@ const app = new Vue({
             }
             return true; 
         },
-        getActors(moviesTVList) {
-            const axiosParam = {
-                params: {
-                    api_key: this.tmdbAPIKey,
-                    language: "it-IT"
-                }
-            };
-            
+        getActors(moviesTVList) {  
             moviesTVList.forEach((movie) => {
                 const searchKey = movie.isMovie ? "movie" : "tv";
 
-                axios.get(`https://api.themoviedb.org/3/${searchKey}/${movie.id}/credits`, axiosParam)
+                axios.get(`https://api.themoviedb.org/3/${searchKey}/${movie.id}/credits`, this.axiosParam)
                     .then((resp) => {
                         
-                        // movie.cast = [...resp.data.cast]
                         Vue.set(movie, "cast", resp.data.cast)
                     })
             })
         },
+        getGenres(movie) {
+            const movieGenres = movie.genre_ids
+            
+            let genresToPrint = [];
+
+            this.genresList.forEach((genre) => {
+
+                movieGenres.forEach((genreThisMovie) => {
+
+                    if (genre.id == genreThisMovie && !genresToPrint.includes(genre.name)) {
+                        genresToPrint.push(genre.name)
+                    }
+                })
+            })
+            return genresToPrint.join(", ");
+        },
+
+        ajaxGenreLists(listType) {
+
+            axios.get(`https://api.themoviedb.org/3/genre/${listType}/list`, this.axiosParam)
+            .then((resp) => {
+
+                this.genresList.push(...resp.data.genres)
+                /*
+                if (listType === "movie") {
+                    this.movieGenresList = [...resp.data.genres]
+
+                } else if (listType === "tv") {
+                    this.tvGenresList = [...resp.data.genres]
+                }
+                */
+            })
+        },
 
     },
+    mounted() {
+        this.ajaxGenreLists("movie");
+        this.ajaxGenreLists("tv");
+    }
 })
