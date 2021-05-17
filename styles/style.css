@@ -7,11 +7,14 @@
 :root{
     --red: #e40b18;
     --bgColor: #141414;
+    --whiteColor: rgb(243, 253, 251);
+    --yellowStar: rgb(255, 207, 102);
+    --lightGrey: rgb(189, 189, 189);
 }
 
 body {
     background-color: var(--bgColor);
-    color: white;
+    color: var(--whiteColor);
 
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -62,10 +65,10 @@ header {
     width: clamp(450px, 50%, 80%);
 
     padding: 8px 16px;
-    border: 1px solid  rgba(255, 255, 255, .5);
+    border: 1px solid  var(--lightGrey);
     border-radius: 16px;
 
-    color: rgba(255, 255, 255, 1);
+    color: var(--whiteColor);
 
     display: flex;
     margin: 0 1.3rem;
@@ -78,13 +81,13 @@ header {
     border-radius: 16px;
 
     background-color: transparent;
-    color: rgba(255, 255, 255, 1);
+    color: var(--whiteColor);
 
     outline: none;
 }
 
 .input-container input::placeholder {
-    color: rgba(255, 255, 255, .7);
+    color: var(--lightGrey);
 }
 
 .input-container i {
@@ -112,7 +115,7 @@ header {
 
 .personal-profile i {
     font-size: 1.3rem;
-    color: white;
+    color: var(--whiteColor);
 }
 
 .personal-profile a {
@@ -248,7 +251,7 @@ h5.user-search {
 /* CLASSI COMUNI */
 
 a {
-    color: white;
+    color: var(--whiteColor);
     text-decoration: none;
 }
 
@@ -259,21 +262,13 @@ a {
 
 /* CLASSI JS */
 .fa-star.text-yellow {
-    color: rgb(255, 207, 102);
+    color: var(--yellowStar);
 }
 .fa-star {
-    color: rgb(189, 189, 189);
+    color: var(--lightGrey);
 }
 
 
-
-/* @media all and (max-width: 1200px) {
-    .input-style {
-        width: 60%;
-    }
-
-}
-*/
 @media all and (max-width: 576px) {
 
     .personal-profile .xs-hidden {
