@@ -14,6 +14,8 @@ const app = new Vue({
         moviesTVList: [],
 
         searchingForQuery: null,
+
+        errorMsg: "",
     },
     methods: {
         onSearchClick() {
@@ -40,6 +42,7 @@ const app = new Vue({
                 "el": ['gr'],
                 "ja": ['jp'],
                 "hi": ['in'],
+                "te": ['in'],
                 "ta": ['np'],
                 "da": ['dk'],
             };
@@ -55,6 +58,7 @@ const app = new Vue({
         getMoviesTv(searchType) {
 
             this.searchingForQuery++
+            this.searchMessageToPrint();
 
             const axiosParam = {
                 params: {
@@ -74,6 +78,12 @@ const app = new Vue({
                 if (searchType === "movie") {
                     this.searchingForQuery--
                     this.moviesList = [...resp.data.results];
+
+                    this.moviesList.forEach((movie) => {
+
+                        Vue.set(movie, "isMovie", true);
+                    })
+
                     this.convertVote(this.moviesList)
 
 
@@ -95,6 +105,12 @@ const app = new Vue({
 
                         return tvSeries;
                     });
+
+                    this.seriesTvList.forEach((serieTv) => {
+
+                        Vue.set(serieTv, "isTVShow", true);
+                    })
+
                     this.convertVote(this.seriesTvList)
                 }
                 if (this.searchingForQuery == 0) {
@@ -106,13 +122,19 @@ const app = new Vue({
             this.moviesTVList = [];
 
             this.moviesTVList = array1.concat(array2); 
-            
+
+            if(this.moviesTVList.length > 0) {
+
+                this.getActors(this.moviesTVList);
+            }
+            this.searchMessageToPrint();
+            this.searchingForQuery = null;
         },
         searchMessageToPrint() {
-            if (this.searchingForQuery != 0) {
-                return "Sto cercando per te...";
+            if (this.searchingForQuery > 0) {
+                this.errorMsg = "Sto cercando per te...";
             } else if (this.moviesTVList.length == 0) {
-                return "Nessun risultato";
+                this.errorMsg = "La ricerca non ha prodotto nessun risultato.";
             }
         },
         // Aggiunge poster, combina il link
@@ -147,6 +169,25 @@ const app = new Vue({
                 return false 
             }
             return true; 
+        },
+        getActors(moviesTVList) {
+            const axiosParam = {
+                params: {
+                    api_key: this.tmdbAPIKey,
+                    language: "it-IT"
+                }
+            };
+            
+            moviesTVList.forEach((movie) => {
+                const searchKey = movie.isMovie ? "movie" : "tv";
+
+                axios.get(`https://api.themoviedb.org/3/${searchKey}/${movie.id}/credits`, axiosParam)
+                    .then((resp) => {
+                        
+                        // movie.cast = [...resp.data.cast]
+                        Vue.set(movie, "cast", resp.data.cast)
+                    })
+            })
         },
 
     },

@@ -56,7 +56,7 @@
         </header>
 
         <main>
-            <div v-if="moviesTVList.length != 0">
+            <div v-if="moviesTVList.length > 0">
                 <h5 class="user-search"> Hai cercato "{{ currentSearch }}" </h5>
 
                 <div class="row" >
@@ -81,7 +81,7 @@
     
                                             <div>
                                                 <h4 class="inline">
-                                                    Lingua originale: 
+                                                    Lingua originale
                                                 </h4>
                                                 <span class="flag-icon flag-icon-squared" 
                                                 :class="'flag-icon-' + getFlagIcon(movie)">
@@ -96,6 +96,16 @@
                                                 v-for="(star, starIndex) in 5"
                                                 :class="addStars(movie, starIndex)"></i>
                                             </div>
+                                            <div>
+                                                <h4>Attori principali</h4>
+                                                <p v-if="movie.cast">
+                                                    <span class="inline cast-member"
+                                                    v-for="actor in movie.cast.slice(0, 5)">
+                                                        {{ actor.original_name }}
+                                                        <span> &nbsp; </span>
+                                                    </span>
+                                                </p>
+                                            </div>
                                         </div>
 
                                         <div class="overview-box"
@@ -103,22 +113,6 @@
                                             <h4>Sinossi</h4>
                                             <p> {{movie.overview}} </p>
                                         </div>
-
-                                        <!-- <h6>Titolo: <strong>{{movie.title}}</strong></h6>
-                                        <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
-                                        <p>Lingua originale: 
-                                            <span class="flag-icon flag-icon-squared" 
-                                            :class="'flag-icon-' + getFlagIcon(movie)">
-                                            </span> 
-                                        <p>
-                                            Voto:  
-                                            <i class="fas fa-star" 
-                                            v-for="(star, starIndex) in 5"
-                                            :class="addStars(movie, starIndex)"></i>
-                                        </p>  
-                                        <p>
-                                            {{movie.overview}}
-                                        </p>     -->
                                     </div>
                                 </div>
 
@@ -128,8 +122,8 @@
                     </ul>
                 </div>
             </div>
-            <div v-else-if="searchingForQuery == 0">  
-                {{ searchMessageToPrint() }}
+            <div v-else-if="moviesTVList.length == 0">  
+                <strong>{{ errorMsg }}</strong>
             </div>
         </main>
         

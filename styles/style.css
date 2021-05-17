@@ -186,7 +186,7 @@ h5.user-search {
 .overlay {
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(0, 0, 0, .7);
     z-index: 1;
     border-radius: 5px;
 
@@ -217,7 +217,12 @@ h5.user-search {
 .overlay span {
     font-size: .75rem;
     line-height: 1rem;
+}
 
+.info-block .cast-member {
+    font-size: .75rem;
+    margin: 0;
+    font-style: normal;
 }
 
 .upper-info span {
@@ -237,7 +242,7 @@ h5.user-search {
 }
 
 .upper-info {
-    height: 35%;
+    height: 50%;
 }
 
 /* CLASSI COMUNI */
@@ -247,7 +252,7 @@ a {
     text-decoration: none;
 }
 
-h4.inline {
+.inline {
     display: inline-block;
 }
 
