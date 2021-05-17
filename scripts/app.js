@@ -6,6 +6,8 @@ const app = new Vue({
         tmdbAPIKey: "ad3dc44159bbda29e23cab3d107aa841",
         userSearch: "",
 
+        currentSearch: "",
+
         moviesList: [],
         seriesTvList: [],
 
@@ -15,6 +17,8 @@ const app = new Vue({
     },
     methods: {
         onSearchClick() {
+
+            this.currentSearch = this.userSearch
 
             if (!this.userSearch) {
                 return;
@@ -113,7 +117,7 @@ const app = new Vue({
         },
         // Aggiunge poster, combina il link
         addPoster(movieObject) {
-            const posterSize = "w185";
+            const posterSize = "w342";
 
             if (!movieObject.poster_path) {
                 return "http://www.movienewz.com/img/films/poster-holder.jpg";
@@ -137,6 +141,12 @@ const app = new Vue({
                 return "text-yellow"
             }
 
+        },
+        checkIfSame(movieObject) {
+            if (movieObject.title === movieObject.original_title) {
+                return false 
+            }
+            return true; 
         },
 
     },

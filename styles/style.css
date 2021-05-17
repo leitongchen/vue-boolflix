@@ -4,20 +4,34 @@
     box-sizing: border-box;
 }
 
+:root{
+    --red: #e40b18;
+    --bgColor: #141414;
+}
+
 body {
-    background-color: #141414;
+    background-color: var(--bgColor);
     color: white;
 
     font-family: Arial, Helvetica, sans-serif;
 }
 
-main {
-    width: 95%;
-    margin: auto;
-    padding: 20px 0;
+.main-container {
+    width: 98%;
+    margin-left: 2%;
+    margin-right: 0;
 }
 
 header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    padding: 20px;
+}
+
+.header-container {
     display: flex;
     align-items: center;
 }
@@ -45,7 +59,7 @@ header {
 }
 
 .input-style {
-    width: 40%;
+    width: clamp(450px, 50%, 80%);
 
     padding: 8px 16px;
     border: 1px solid  rgba(255, 255, 255, .5);
@@ -54,6 +68,8 @@ header {
     color: rgba(255, 255, 255, 1);
 
     display: flex;
+    margin: 0 1.3rem;
+
 }
 
 .input-container input {
@@ -111,7 +127,7 @@ header {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background-color: rgb(168, 24, 24);
+    background-color: var(--red);
     text-align: center;
     line-height: 20px;
 
@@ -124,12 +140,115 @@ header {
 }
 
 
+/* MAIN */
+
+main {
+    margin-top: 80px;
+}
+
+.search-movie-container {
+    display: flex;
+   
+    overflow: auto;
+
+    margin: 20px 0;
+}
+
+h5.user-search {
+    font-size: 1.2rem;
+}
+
+.search-movie-container::-webkit-scrollbar,
+.poster-container:hover .overview-box::-webkit-scrollbar {
+    display: none;
+}
+
+.search-movie-container li {
+    margin-right: 8px;
+}
+
+.poster-container {
+    width: clamp(150px, 300px, 500px);
+    height: clamp(200px, 450px, 600px);
+
+    cursor: pointer;
+
+    position: relative;
+}
+
+.poster-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 1;
+    border-radius: 5px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    opacity: 0;
+}
+
+.poster-container:hover .overlay {
+    opacity: 1;
+}
+
+.poster-container .info-block {
+    padding: 20px;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.overview-box {
+    overflow: auto;
+}
+
+.overlay p,
+.overlay span {
+    font-size: .75rem;
+    line-height: 1rem;
+
+}
+
+.upper-info span {
+    font-style: italic;
+}
+
+.overlay h4 {
+    font-size: .8rem;
+}
+
+.overlay .fa-star {
+    font-size: .75rem;
+}
+
+.info-block div {
+    margin: 5px 0; 
+}
+
+.upper-info {
+    height: 35%;
+}
 
 /* CLASSI COMUNI */
 
 a {
     color: white;
     text-decoration: none;
+}
+
+h4.inline {
+    display: inline-block;
 }
 
 
@@ -142,17 +261,17 @@ a {
 }
 
 
-@media all and (max-width: 1200px) {
+
+/* @media all and (max-width: 1200px) {
     .input-style {
         width: 60%;
     }
 
 }
+*/
+@media all and (max-width: 576px) {
 
-@media all and (max-width: 992px) {
-    .input-style {
-        width: 80%;
+    .personal-profile .xs-hidden {
+        display: none;
     }
-
-    
-}
+} 

@@ -15,72 +15,127 @@
     <title>Boolflix</title>
 </head>
 <body>
-    <main id="app">
+    <div id="app" class="main-container">
 
         <header>
-
-            <div class="logo-container">
-                <a href="#">
-                    <img src="img/boolflix-logo.png" alt="logo Boolflix">
-                </a>
-            </div>
-          
-            <div class="input-container">
-                <div class="input-style">
-                    <input type="text"
-                    placeholder="Search for Movies & TV Shows..." 
-                    v-model="userSearch"
-                    @keyup.enter="onSearchClick()">
-                    
-                    <i class="fas fa-search"
-                    @click="onSearchClick()"></i>
+            <div class="header-container">
+                <div class="logo-container">
+                    <a href="#">
+                        <img src="img/boolflix-logo.png" alt="logo Boolflix">
+                    </a>
+                </div>
+              
+                <div class="input-container">
+                    <div class="input-style">
+                        <input type="text"
+                        placeholder="Search for Movies & TV Shows..." 
+                        v-model="userSearch"
+                        @keyup.enter="onSearchClick()">
+                        
+                        <i class="fas fa-search"
+                        @click="onSearchClick()"></i>
+                    </div>
+                </div>
+    
+                <div class="personal-profile">
+                    <a href="#" class="xs-hidden">
+                        KIDS
+                    </a>
+                    <a href="#">
+                        <i class="fas fa-bell"></i>
+                        <span class="alert">2</span>
+                    </a>
+                    <a href="#">
+                        <div class="profile-img-container">
+                            <img src="img/profile.pic.jpg" alt="profile picture">
+                        </div>
+                        <i class="fas fa-sort-down xs-hidden"></i>
+                    </a>
                 </div>
             </div>
-
-            <div class="personal-profile">
-                <a href="#">
-                    KIDS
-                </a>
-                <a href="#">
-                    <i class="fas fa-bell"></i>
-                    <span class="alert">2</span>
-                </a>
-                <a href="#">
-                    <div class="profile-img-container">
-                        <img src="img/profile.pic.jpg" alt="profile picture">
-                    </div>
-                    <i class="fas fa-sort-down"></i>
-                </a>
-                
-                
-            </div>
-           
         </header>
 
+        <main>
+            <div v-if="moviesTVList.length != 0">
+                <h5 class="user-search"> Hai cercato "{{ currentSearch }}" </h5>
+
+                <div class="row" >
+                    <ul class="search-movie-container">
+
+                        <li v-for="(movie, index) in moviesTVList"> 
+                            <div class="poster-container">
+
+                                <img :src="addPoster(movie)" alt="poster movie">
+                                <div class="overlay">
+                                    <div class="info-block">
+                                        <div class="upper-info">
+                                            <div>
+                                                <span>Titolo</span>
+                                                <h4>{{movie.title}}</h4>
+                                            </div>
+    
+                                            <div v-if="checkIfSame(movie)">
+                                                <span>Titolo originale</span>
+                                                <h4>{{movie.original_title}}</h4>
+                                            </div>
+    
+                                            <div>
+                                                <h4 class="inline">
+                                                    Lingua originale: 
+                                                </h4>
+                                                <span class="flag-icon flag-icon-squared" 
+                                                :class="'flag-icon-' + getFlagIcon(movie)">
+                                                </span> 
+                                            </div>
+    
+                                            <div>
+                                                <h4 class="inline">
+                                                    Voto  
+                                                </h4>
+                                                <i class="fas fa-star" 
+                                                v-for="(star, starIndex) in 5"
+                                                :class="addStars(movie, starIndex)"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="overview-box"
+                                        v-if="movie.overview">
+                                            <h4>Sinossi</h4>
+                                            <p> {{movie.overview}} </p>
+                                        </div>
+
+                                        <!-- <h6>Titolo: <strong>{{movie.title}}</strong></h6>
+                                        <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
+                                        <p>Lingua originale: 
+                                            <span class="flag-icon flag-icon-squared" 
+                                            :class="'flag-icon-' + getFlagIcon(movie)">
+                                            </span> 
+                                        <p>
+                                            Voto:  
+                                            <i class="fas fa-star" 
+                                            v-for="(star, starIndex) in 5"
+                                            :class="addStars(movie, starIndex)"></i>
+                                        </p>  
+                                        <p>
+                                            {{movie.overview}}
+                                        </p>     -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div v-else-if="searchingForQuery == 0">  
+                {{ searchMessageToPrint() }}
+            </div>
+        </main>
         
 
-        <div v-if="moviesTVList.length != 0">
-            <ul>
-                <li v-for="(movie, index) in moviesTVList"> 
-                    <img :src="addPoster(movie)" alt="poster movie">
-                    <p>Titolo: <strong>{{movie.title}}</strong> </p>
-                    <p>Titolo originale: <strong>{{movie.original_title}}</strong> </p>
-                    <p>Lingua originale: <span class="flag-icon flag-icon-squared" :class="'flag-icon-' + getFlagIcon(movie)"></span> 
-                    <p>
-                        Voto:  
-                        <i class="fas fa-star" 
-                        v-for="(star, starIndex) in 5"
-                        :class="addStars(movie, starIndex)"></i>
-                    </p>      
-                </li>
-            </ul>
 
-        </div>
-        <div v-else-if="searchingForQuery == 0">  
-            {{ searchMessageToPrint() }}
-        </div>
-
-    </main>
+    </div>
 
     <script src="scripts/app.js"></script>
 </body>
