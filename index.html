@@ -26,11 +26,13 @@
                 </div>
               
                 <div class="input-container">
-                    <div class="input-style">
+                    <div class="input-style" :class="{'bold-border': inputFocus}">
                         <input type="text"
                         placeholder="Search for Movies & TV Shows..." 
                         v-model="userSearch"
-                        @keyup.enter="onSearchClick()">
+                        @keyup.enter="onSearchClick()"
+                        @focus="inputFocus = true"
+                        @focusout="inputFocus = false">
                         
                         <i class="fas fa-search"
                         @click="onSearchClick()"></i>
@@ -59,14 +61,34 @@
             <div v-if="moviesTVList.length > 0">
                 <h5 class="user-search"> Hai cercato "{{ currentSearch }}" </h5>
 
-                <select name="" id="movies-genres">
-                    <option value=""></option>
-                </select>
+                <div class="genre-filter">
+                    <h6>
+                        Filtra i risultati per genere
+                    </h6>
+                    <select name="" id="movies-genres"
+                    v-model="userSelectedGenre">
+                        
+                        <option value="">All</option>
+                        <option :value="genre"
+                        v-for="genre in genresToSelect">
+                            {{genre}}
+                        </option>
+                    </select>
+                </div>
+
+                <!-- <div class="btns-container">
+                    <span class="genre-btn"
+                    v-for="genre in genresToSelect"
+                    :value="genre"
+                    @change="filteredMoviesList">
+                        {{ genre }}
+                    </span>
+                </div> -->
 
                 <div class="row" >
                     <ul class="search-movie-container">
 
-                        <li v-for="(movie, index) in moviesTVList"> 
+                        <li v-for="(movie, index) in filteredMoviesList"> 
                             <div class="poster-container">
 
                                 <div class="img-container">
@@ -123,16 +145,16 @@
                                                 <button class="text-button"
                                                 v-if="!movie.cast"
                                                 @click="getActors(movie)">
-                                                    ...vedi attori
+                                                    ...vedi cast
                                                 </button>
                                                 <div v-else-if="movie.cast.length != 0">
-                                                    <h4>Attori principali</h4>
+                                                    <h4>Cast</h4>
                                                     <span class="inline cast-member">
                                                         {{ printCast(movie.cast) }}
                                                     </span>
                                                 </div>
                                                 <span v-else>
-                                                    Non ci sono attori.
+                                                    Cast non disponibile.
                                                 </span>
                                             </div>
                                         </div>

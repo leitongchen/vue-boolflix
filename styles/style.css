@@ -75,17 +75,20 @@ header {
     margin: 0 1.3rem;
 
 }
+.bold-border {
+    border: 2px solid white;
+}
 
 .input-container input {
     flex-grow: 1;
     border: 0;
-    border-radius: 16px;
 
     background-color: transparent;
     color: var(--whiteColor);
 
     outline: none;
 }
+
 
 .input-container input::placeholder {
     color: var(--lightGrey);
@@ -143,9 +146,22 @@ header {
     top: -10px;
 }
 
+/* SELECT GENRES */
+
+.genre-filter {
+    margin-top: 20px;
+}
+
+.genre-filter h6 {
+    font-size: .75rem;
+    font-weight: 600;
+
+    display: inline-block;
+    margin-right: 20px;
+}
+
 
 /* MAIN */
-
 main {
     margin-top: 80px;
 }
@@ -207,7 +223,7 @@ h5.user-search {
     background-color: var(--red);
     color: var(--whiteColor);
     padding: 10px 18px;
-    border-radius: 0 10px 10px 0;
+    border-radius: 0 6px 6px 0;
 
     font-weight: 800;
 

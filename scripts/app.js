@@ -22,6 +22,23 @@ const app = new Vue({
         searchingForQuery: null,
 
         errorMsg: "",
+        inputFocus: false,
+
+        userSelectedGenre: "",
+    },
+    computed: {
+        filteredMoviesList() {
+            
+            if (!this.userSelectedGenre) {
+                return this.moviesTVList
+            }
+            const genre = this.userSelectedGenre;
+            
+            return this.moviesTVList.filter((movie) => {
+                return movie.genresNames.includes(genre)
+            })
+        },
+
     },
     methods: {
         onSearchClick() {
@@ -165,7 +182,7 @@ const app = new Vue({
         convertVote(listArray) {
 
             listArray.map((movie) => {
-                movie.vote_average = Math.ceil(movie.vote_average / 2);
+                movie.vote_average = Math.round(movie.vote_average / 2);
             });
         },
         // aggiunge una classe text-yellow alle stelle in base al voto
@@ -243,6 +260,11 @@ const app = new Vue({
             })
             this.genresToSelect = genresToSelect;
         },
+
+        // onInputFocus() {
+
+        //     this.inputFocus = !this.inputFocus
+        // },
 
         // chiamata ajax per salvare nella variabile in data "this.allGenresList"
         // tutti i generi (codice e nome) disponibili
