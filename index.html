@@ -100,28 +100,36 @@
                                                 v-for="(star, starIndex) in 5"
                                                 :class="addStars(movie, starIndex)"></i>
                                             </div>
-                                            <div>
-                                                <h4>Attori principali</h4>
-                                                <p v-if="movie.cast">
-                                                    <span class="inline cast-member">
-                                                        <!-- {{ actor.original_name }} -->
-                                                        {{ printCast(movie.cast) }}
-                                                        <span> &nbsp; </span>
-                                                    </span>
-                                                </p>
-                                            </div>
-                                            <div>
+
+                                            <div v-if="movie.genre_ids.length != 0">
                                                 <h4>Genere</h4>
                                                 <p>
                                                     {{ printGenres(movie) }}
                                                 </p>
                                             </div>
-                                        </div>
 
-                                        <div class="overview-box"
-                                        v-if="movie.overview">
+                                            <div>
+                                                <button class="text-button"
+                                                v-if="!movie.cast"
+                                                @click="getActors(movie)">
+                                                    ...vedi attori
+                                                </button>
+                                                <div v-else-if="movie.cast.length != 0">
+                                                    <h4>Attori principali</h4>
+                                                    <span class="inline cast-member">
+                                                        {{ printCast(movie.cast) }}
+                                                    </span>
+                                                </div>
+                                                <span v-else>
+                                                    Non ci sono attori.
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div v-if="movie.overview">
                                             <h4>Sinossi</h4>
-                                            <p> {{movie.overview}} </p>
+                                            <div class="overview-box">
+                                                <p> {{movie.overview}} </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

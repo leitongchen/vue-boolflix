@@ -9,7 +9,6 @@ const app = new Vue({
             }
         },
         userSearch: "",
-
         currentSearch: "",
 
         moviesList: [],
@@ -138,8 +137,6 @@ const app = new Vue({
             this.moviesTVList = array1.concat(array2); 
 
             if(this.moviesTVList.length > 0) {
-
-                this.getActors(this.moviesTVList);
                 this.getGenres4moviesList(this.moviesTVList)
             }
             this.searchMessageToPrint();
@@ -189,45 +186,44 @@ const app = new Vue({
             return true; 
         },
 
-        // Fa una chiamata ajax per reperire il nome degli attori per ciascun film
-        // I nomi ricavati vengono inseriti direttamente in moviesTVList
-        getActors(moviesTVList) {  
-            moviesTVList.forEach((movie) => {
-                const searchKey = movie.isMovie ? "movie" : "tv";
+        // Al click del button (in overlay "attori principali")
+        // viene fatta la chiamata ajax
+        // viene salvata una nuova chiave "cast" contenenti i dati di risposta
+        getActors(movie) {  
+            const searchKey = movie.isMovie ? "movie" : "tv";
 
-                axios.get(`https://api.themoviedb.org/3/${searchKey}/${movie.id}/credits`, this.axiosParam)
-                    .then((resp) => {
-                        
-                        Vue.set(movie, "cast", resp.data.cast)
-                    })
+            axios.get(`https://api.themoviedb.org/3/${searchKey}/${movie.id}/credits`, this.axiosParam)
+                .then((resp) => {
+                    
+                    Vue.set(movie, "cast", resp.data.cast)
+                })
+        },
+        // prende l'elenco intero movie.cast e stampa solo i primi 5
+        // funzione invocata in html
+        printCast(movieCast) {
+            const shortCastMovie = movieCast.slice(0, 5);
+
+            let actorsNames = [];
+            shortCastMovie.forEach((actor) => {
+                actorsNames.push(actor.original_name)
             })
+            return actorsNames.join(", ")
         },
 
         // fa una comparazione tra i codici dei generi del film preso in esame con 
         // l'elenco di tutti i generi in "this.allGenresList"
         // ritorna i nomi dei generi riferiti al film preso in esame
+        // il risultato viene stampato in html, dove la f è stata invocata
         printGenres(movie) {
             const movieGenres = movie.genresNames
             return movieGenres.join(", ");
         },
         
-        printCast(arrayOfData) {
-
-            const actorsToPrint = arrayOfData.filter((actor, index) => index < 5)
-
-            let actorsName = [];
-            actorsToPrint.forEach((actor) => {
-                actorsName.push(actor.original_name)
-            })
-            return actorsName.join(", ");
-        },
-
         // per ciascun film crea una nuova chiave con i nomi dei generi associati al film 
         // crea una nuova variabile in data contenente i generi di tutti i film 
         // che compaiono dalla ricerca fatta dall'utente
         getGenres4moviesList(moviesList) {
             let genresToSelect = [];
-
             moviesList.forEach((movie) => {
 
                 let thisMovieGenresName = [];
@@ -238,7 +234,6 @@ const app = new Vue({
                     if (thisMovieGenresId.includes(genre.id) && thisMovieGenresName.length < thisMovieGenresId.length) {
 
                         thisMovieGenresName.push(genre.name)
-
                         if (!genresToSelect.includes(genre.name)) {
                             genresToSelect.push(genre.name)
                         }
