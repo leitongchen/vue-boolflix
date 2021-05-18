@@ -59,6 +59,10 @@
             <div v-if="moviesTVList.length > 0">
                 <h5 class="user-search"> Hai cercato "{{ currentSearch }}" </h5>
 
+                <select name="" id="movies-genres">
+                    <option value=""></option>
+                </select>
+
                 <div class="row" >
                     <ul class="search-movie-container">
 
@@ -99,9 +103,9 @@
                                             <div>
                                                 <h4>Attori principali</h4>
                                                 <p v-if="movie.cast">
-                                                    <span class="inline cast-member"
-                                                    v-for="actor in movie.cast.slice(0, 5)">
-                                                        {{ actor.original_name }}
+                                                    <span class="inline cast-member">
+                                                        <!-- {{ actor.original_name }} -->
+                                                        {{ printCast(movie.cast) }}
                                                         <span> &nbsp; </span>
                                                     </span>
                                                 </p>
@@ -109,7 +113,7 @@
                                             <div>
                                                 <h4>Genere</h4>
                                                 <p>
-                                                    {{ getGenres(movie) }}
+                                                    {{ printGenres(movie) }}
                                                 </p>
                                             </div>
                                         </div>

@@ -17,7 +17,8 @@ const app = new Vue({
 
         moviesTVList: [],
 
-        genresList: [],
+        allGenresList: [],
+        genresToSelect: [],
 
         searchingForQuery: null,
 
@@ -139,6 +140,7 @@ const app = new Vue({
             if(this.moviesTVList.length > 0) {
 
                 this.getActors(this.moviesTVList);
+                this.getGenres4moviesList(this.moviesTVList)
             }
             this.searchMessageToPrint();
             this.searchingForQuery = null;
@@ -202,25 +204,52 @@ const app = new Vue({
         },
 
         // fa una comparazione tra i codici dei generi del film preso in esame con 
-        // l'elenco di tutti i generi in "this.genresList"
+        // l'elenco di tutti i generi in "this.allGenresList"
         // ritorna i nomi dei generi riferiti al film preso in esame
-        getGenres(movie) {
-            const movieGenres = movie.genre_ids
-            let genresToPrint = [];
+        printGenres(movie) {
+            const movieGenres = movie.genresNames
+            return movieGenres.join(", ");
+        },
+        
+        printCast(arrayOfData) {
 
-            this.genresList.forEach((genre) => {
+            const actorsToPrint = arrayOfData.filter((actor, index) => index < 5)
 
-                movieGenres.forEach((genreThisMovie) => {
-
-                    if (genre.id == genreThisMovie && !genresToPrint.includes(genre.name)) {
-                        genresToPrint.push(genre.name)
-                    }
-                })
+            let actorsName = [];
+            actorsToPrint.forEach((actor) => {
+                actorsName.push(actor.original_name)
             })
-            return genresToPrint.join(", ");
+            return actorsName.join(", ");
         },
 
-        // chiamata ajax per salvare nella variabile in data "this.genresList"
+        // per ciascun film crea una nuova chiave con i nomi dei generi associati al film 
+        // crea una nuova variabile in data contenente i generi di tutti i film 
+        // che compaiono dalla ricerca fatta dall'utente
+        getGenres4moviesList(moviesList) {
+            let genresToSelect = [];
+
+            moviesList.forEach((movie) => {
+
+                let thisMovieGenresName = [];
+                const thisMovieGenresId = movie.genre_ids
+
+                this.allGenresList.forEach((genre) => {
+
+                    if (thisMovieGenresId.includes(genre.id) && thisMovieGenresName.length < thisMovieGenresId.length) {
+
+                        thisMovieGenresName.push(genre.name)
+
+                        if (!genresToSelect.includes(genre.name)) {
+                            genresToSelect.push(genre.name)
+                        }
+                    }
+                })
+                Vue.set(movie, "genresNames", thisMovieGenresName)
+            })
+            this.genresToSelect = genresToSelect;
+        },
+
+        // chiamata ajax per salvare nella variabile in data "this.allGenresList"
         // tutti i generi (codice e nome) disponibili
         // sia di tipo "movie" che "tv"
         // la funzione viene chiamata in mounted
@@ -229,7 +258,7 @@ const app = new Vue({
             axios.get(`https://api.themoviedb.org/3/genre/${listType}/list`, this.axiosParam)
             .then((resp) => {
 
-                this.genresList.push(...resp.data.genres)
+                this.allGenresList.push(...resp.data.genres)
             })
         },
     },
