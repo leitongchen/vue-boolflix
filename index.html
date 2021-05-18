@@ -69,7 +69,18 @@
                         <li v-for="(movie, index) in moviesTVList"> 
                             <div class="poster-container">
 
-                                <img :src="addPoster(movie)" alt="poster movie">
+                                <div class="img-container">
+                                    <img :src="addPoster(movie)" alt="poster movie">
+                                    
+                                    <div class="movie-logo-tag">
+                                        <span v-if="movie.isMovie">
+                                            FILM
+                                        </span>
+                                        <span v-else>
+                                            SERIE TV
+                                        </span>
+                                    </div>
+                                </div>
                                 <div class="overlay">
                                     <div class="info-block">
                                         <div class="upper-info">
@@ -78,7 +89,7 @@
                                                 <h4>{{movie.title}}</h4>
                                             </div>
     
-                                            <div v-if="checkIfSame(movie)">
+                                            <div v-if="!checkIfSame(movie)">
                                                 <span>Titolo originale</span>
                                                 <h4>{{movie.original_title}}</h4>
                                             </div>

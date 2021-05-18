@@ -10,6 +10,7 @@
     --whiteColor: rgb(243, 253, 251);
     --yellowStar: rgb(255, 207, 102);
     --lightGrey: rgb(189, 189, 189);
+    --darkerGrey: #757171;
 }
 
 body {
@@ -149,10 +150,15 @@ main {
     margin-top: 80px;
 }
 
+.row {
+    overflow: auto;
+
+}
+
 .search-movie-container {
     display: flex;
    
-    overflow: auto;
+    /* overflow: auto; */
 
     margin: 20px 0;
 }
@@ -184,6 +190,28 @@ h5.user-search {
     height: 100%;
     object-fit: cover;
     border-radius: 5px;
+}
+
+.img-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* LOGO SERIE TV O FILM */
+.movie-logo-tag {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+
+    background-color: var(--red);
+    color: var(--whiteColor);
+    padding: 10px 18px;
+    border-radius: 0 10px 10px 0;
+
+    font-weight: 800;
+
+    box-shadow: 0 2px 5px var(--bgColor);
 }
 
 .overlay {
@@ -263,6 +291,7 @@ h5.user-search {
 }
 
 
+
 /* CLASSI COMUNI */
 
 a {
@@ -272,6 +301,25 @@ a {
 
 .inline {
     display: inline-block;
+}
+
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(13deg, var(--red) 14%,var(--red) 64%);
+    border-radius: 15px;
+}
+::-webkit-scrollbar-thumb:hover{
+    background: linear-gradient(13deg, var(--red) 14%, #f16969 86%);
+}
+::-webkit-scrollbar-track{
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: inset 7px 10px 12px var(--darkerGrey);
 }
 
 

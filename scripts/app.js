@@ -181,9 +181,9 @@ const app = new Vue({
         // se sì, ritorna false, e il titolo originale non viene stampato
         checkIfSame(movieObject) {
             if (movieObject.title === movieObject.original_title) {
-                return false 
+                return true; 
             }
-            return true; 
+            return false; 
         },
 
         // Al click del button (in overlay "attori principali")
