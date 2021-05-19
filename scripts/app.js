@@ -13,7 +13,7 @@ const app = new Vue({
 
         moviesList: [],
         seriesTvList: [],
-
+        // lista con film e serie tv
         moviesTVList: [],
 
         allGenresList: [],
@@ -54,6 +54,7 @@ const app = new Vue({
             this.getMoviesTv("tv");
 
             this.userSearch = ""
+            this.userSelectedGenre = ""
         },
 
         // ritorna la sigla per stabilire la bandiera da associare alla lingua del film
@@ -163,9 +164,8 @@ const app = new Vue({
         // Funzione richiamata più volte nel corso dell'elaborazione dei dati API
         // Restituisce un messaggio per l'utente
         searchMessageToPrint() {
-            if (this.searchingForQuery > 0) {
-                this.errorMsg = "Sto cercando per te...";
-            } else if (this.moviesTVList.length == 0) {
+           
+            if (this.moviesTVList.length == 0) {
                 this.errorMsg = "La ricerca non ha prodotto nessun risultato.";
             }
         },

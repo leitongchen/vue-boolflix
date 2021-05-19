@@ -62,18 +62,21 @@
                 <h5 class="user-search"> Hai cercato "{{ currentSearch }}" </h5>
 
                 <div class="genre-filter">
-                    <h6>
+                    <label for="movies-genres">
                         Filtra i risultati per genere
-                    </h6>
-                    <select name="" id="movies-genres"
-                    v-model="userSelectedGenre">
-                        
-                        <option value="">All</option>
-                        <option :value="genre"
-                        v-for="genre in genresToSelect">
-                            {{genre}}
-                        </option>
-                    </select>
+                    </label>
+                    <div class="select">
+                        <select name="" id="movies-genres"
+                        v-model="userSelectedGenre">
+                            
+                            <option value="">Tutti i generi</option>
+                            <option :value="genre"
+                            v-for="genre in genresToSelect">
+                                {{genre}}
+                            </option>
+                        </select>
+                        <span class="focus"></span>
+                    </div>
                 </div>
 
                 <!-- <div class="btns-container">
@@ -94,7 +97,7 @@
                                 <div class="img-container">
                                     <img :src="addPoster(movie)" alt="poster movie">
                                     
-                                    <div class="movie-logo-tag">
+                                    <div class="movie-logo-label">
                                         <span v-if="movie.isMovie">
                                             FILM
                                         </span>
@@ -171,6 +174,23 @@
                         </li>
 
                     </ul>
+                </div>
+            </div>
+            <div class="spinner-container"
+            v-else-if="searchingForQuery > 0">
+                <div class="lds-default">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
                 </div>
             </div>
             <div v-else-if="moviesTVList.length == 0">  
